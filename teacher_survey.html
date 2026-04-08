@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>교사 자기 성찰 점검</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=Noto+Sans+KR:wght@300;400;500&display=swap');
+
+  :root {
+    --bg: #faf8f4;
+    --bg2: #f2ede4;
+    --ink: #2c2416;
+    --ink2: #6b5c42;
+    --gold: #b8860b;
+    --gold2: #d4a017;
+    --red: #c0392b;
+    --green: #27ae60;
+    --border: #d9cebe;
+    --card: #ffffff;
+    --shadow: rgba(44,36,22,0.10);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    min-height: 100vh;
+  }
+
+  /* ── COVER ── */
+  #cover {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 24px;
+    background: linear-gradient(160deg, #2c2416 0%, #4a3728 60%, #6b4c2e 100%);
+    color: #faf8f4;
+    text-align: center;
+  }
+  .cover-label {
+    font-size: 11px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--gold2);
+    margin-bottom: 20px;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-weight: 300;
+  }
+  .cover-title {
+    font-family: 'Noto Serif KR', serif;
+    font-size: clamp(26px, 7vw, 38px);
+    font-weight: 700;
+    line-height: 1.4;
+    margin-bottom: 16px;
+  }
+  .cover-sub {
+    font-size: 13px;
+    color: #c9bfb0;
+    line-height: 1.8;
+    margin-bottom: 40px;
+    max-width: 320px;
+  }
+  .cover-meta {
+    display: flex;
+    gap: 24px;
+    margin-bottom: 48px;
+  }
+  .meta-item {
+    text-align: center;
+  }
+  .meta-num {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--gold2);
+  }
+  .meta-desc {
+    font-size: 11px;
+    color: #a89880;
+    margin-top: 2px;
+  }
+  .start-btn {
+    background: var(--gold);
+    color: #fff;
+    border: none;
+    padding: 16px 48px;
+    font-family: 'Noto Serif KR', serif;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 2px;
+    cursor: pointer;
+    letter-spacing: 1px;
+    transition: background 0.2s;
+  }
+  .start-btn:hover { background: var(--gold2); }
+
+  /* ── SURVEY ── */
+  #survey { display: none; padding: 0 0 80px 0; }
+
+  .progress-bar-wrap {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: var(--ink);
+    padding: 12px 20px;
+  }
+  .progress-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+    color: #c9bfb0;
+    font-size: 12px;
+  }
+  .progress-bar {
+    height: 3px;
+    background: #4a3728;
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: var(--gold2);
+    border-radius: 2px;
+    transition: width 0.4s ease;
+    width: 0%;
+  }
+
+  .question-card {
+    margin: 20px 16px;
+    background: var(--card);
+    border-radius: 4px;
+    padding: 24px 20px 20px;
+    box-shadow: 0 2px 12px var(--shadow);
+    border-left: 3px solid var(--border);
+    transition: border-left-color 0.3s;
+  }
+  .question-card.answered { border-left-color: var(--gold); }
+
+  .q-number {
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: var(--gold);
+    font-weight: 500;
+    margin-bottom: 10px;
+  }
+  .q-text {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 15px;
+    line-height: 1.75;
+    color: var(--ink);
+    margin-bottom: 20px;
+  }
+
+  .scale-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .scale-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 10px;
+    color: var(--ink2);
+    padding: 0 2px;
+    margin-bottom: 4px;
+  }
+  .scale-options {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+  }
+  .scale-btn {
+    flex: 1;
+    aspect-ratio: 1;
+    max-width: 56px;
+    border: 1.5px solid var(--border);
+    background: var(--bg);
+    border-radius: 3px;
+    font-family: 'Noto Serif KR', serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--ink2);
+    cursor: pointer;
+    transition: all 0.15s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .scale-btn:hover {
+    border-color: var(--gold);
+    color: var(--gold);
+    background: #fdf8ee;
+  }
+  .scale-btn.selected {
+    background: var(--gold);
+    border-color: var(--gold);
+    color: #fff;
+    transform: scale(1.08);
+  }
+
+  .submit-area {
+    padding: 20px 16px;
+    text-align: center;
+  }
+  .submit-btn {
+    background: var(--ink);
+    color: #faf8f4;
+    border: none;
+    padding: 16px 40px;
+    font-family: 'Noto Serif KR', serif;
+    font-size: 15px;
+    font-weight: 600;
+    border-radius: 2px;
+    cursor: pointer;
+    width: 100%;
+    max-width: 360px;
+    transition: background 0.2s;
+  }
+  .submit-btn:hover { background: #4a3728; }
+  .submit-btn:disabled { background: #aaa; cursor: not-allowed; }
+  .unanswered-msg {
+    font-size: 12px;
+    color: var(--red);
+    margin-top: 10px;
+  }
+
+  /* ── RESULT ── */
+  #result { display: none; }
+
+  .result-header {
+    background: linear-gradient(160deg, #2c2416 0%, #4a3728 100%);
+    padding: 48px 24px 32px;
+    text-align: center;
+    color: #faf8f4;
+  }
+  .result-label {
+    font-size: 10px;
+    letter-spacing: 4px;
+    color: var(--gold2);
+    margin-bottom: 16px;
+  }
+  .result-score-ring {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 3px solid var(--gold);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+    background: rgba(184,134,11,0.08);
+  }
+  .result-score-num {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 36px;
+    font-weight: 700;
+    color: var(--gold2);
+    line-height: 1;
+  }
+  .result-score-max {
+    font-size: 11px;
+    color: #a89880;
+    margin-top: 3px;
+  }
+  .result-type-name {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .result-type-desc {
+    font-size: 13px;
+    color: #c9bfb0;
+    line-height: 1.8;
+    max-width: 320px;
+    margin: 0 auto;
+  }
+
+  .result-body {
+    padding: 24px 16px;
+  }
+  .result-section {
+    background: var(--card);
+    border-radius: 4px;
+    padding: 20px;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 8px var(--shadow);
+  }
+  .section-title {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--gold);
+    letter-spacing: 1px;
+    margin-bottom: 14px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .domain-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+  .domain-name {
+    font-size: 12px;
+    color: var(--ink2);
+    width: 72px;
+    flex-shrink: 0;
+  }
+  .domain-bar-bg {
+    flex: 1;
+    height: 8px;
+    background: var(--bg2);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .domain-bar-fill {
+    height: 100%;
+    border-radius: 4px;
+    background: var(--gold);
+    transition: width 1s ease;
+  }
+  .domain-score {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--ink);
+    width: 36px;
+    text-align: right;
+    flex-shrink: 0;
+  }
+
+  .message-box {
+    background: var(--bg2);
+    border-left: 3px solid var(--gold);
+    padding: 16px;
+    border-radius: 0 4px 4px 0;
+    font-size: 13px;
+    line-height: 1.85;
+    color: var(--ink);
+    font-family: 'Noto Serif KR', serif;
+  }
+
+  .retry-btn {
+    display: block;
+    margin: 8px auto 0;
+    background: transparent;
+    border: 1.5px solid var(--border);
+    color: var(--ink2);
+    padding: 12px 32px;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 13px;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: border-color 0.2s;
+  }
+  .retry-btn:hover { border-color: var(--gold); color: var(--gold); }
+</style>
+</head>
+<body>
+
+<!-- COVER -->
+<div id="cover">
+  <div class="cover-label">교사대학 · 자기 성찰 점검</div>
+  <div class="cover-title">나는 어떤 교사인가</div>
+  <div class="cover-sub">이 점검은 옳고 그름을 평가하지 않습니다.<br>지금 나의 모습을 솔직하게 바라보는<br>거울이 되길 바랍니다.</div>
+  <div class="cover-meta">
+    <div class="meta-item">
+      <div class="meta-num">20</div>
+      <div class="meta-desc">문항</div>
+    </div>
+    <div class="meta-item">
+      <div class="meta-num">5</div>
+      <div class="meta-desc">분 내외</div>
+    </div>
+    <div class="meta-item">
+      <div class="meta-num">4</div>
+      <div class="meta-desc">영역</div>
+    </div>
+  </div>
+  <button class="start-btn" onclick="startSurvey()">점검 시작하기</button>
+</div>
+
+<!-- SURVEY -->
+<div id="survey">
+  <div class="progress-bar-wrap">
+    <div class="progress-info">
+      <span id="prog-text">0 / 20</span>
+      <span id="prog-pct">0%</span>
+    </div>
+    <div class="progress-bar">
+      <div class="progress-fill" id="prog-fill"></div>
+    </div>
+  </div>
+  <div id="questions-wrap"></div>
+  <div class="submit-area">
+    <button class="submit-btn" id="submit-btn" onclick="submitSurvey()">결과 확인하기</button>
+    <div class="unanswered-msg" id="unanswered-msg"></div>
+  </div>
+</div>
+
+<!-- RESULT -->
+<div id="result">
+  <div class="result-header">
+    <div class="result-label">MY RESULT</div>
+    <div class="result-score-ring">
+      <div class="result-score-num" id="r-total">0</div>
+      <div class="result-score-max">/ 100</div>
+    </div>
+    <div class="result-type-name" id="r-type-name"></div>
+    <div class="result-type-desc" id="r-type-desc"></div>
+  </div>
+  <div class="result-body">
+    <div class="result-section">
+      <div class="section-title">영역별 점수</div>
+      <div id="domain-bars"></div>
+    </div>
+    <div class="result-section">
+      <div class="section-title">성찰 메시지</div>
+      <div class="message-box" id="r-message"></div>
+    </div>
+    <button class="retry-btn" onclick="restart()">처음부터 다시하기</button>
+  </div>
+</div>
+
+<script>
+const QUESTIONS = [
+  { n:1,  text:"나는 학생의 행동을 볼 때 그 배경보다 겉으로 드러난 모습만 보고 판단하는 편이다.",        domain:0 },
+  { n:2,  text:"학생의 문제 행동을 볼 때 이해보다 먼저 지적이 앞서는 경우가 많다.",                    domain:0 },
+  { n:3,  text:"학생 한 사람의 가능성을 길게 보기보다 현재의 모습으로 쉽게 평가하는 편이다.",          domain:0 },
+  { n:4,  text:"말 잘 듣는 학생에게는 관심이 가지만 어려운 학생에게는 마음이 쉽게 닫히는 편이다.",    domain:0 },
+  { n:5,  text:"학생의 성장을 기다려 주기보다 빨리 변화되기를 기대하는 편이다.",                      domain:0 },
+  { n:6,  text:"수업이나 모임 중 예상과 다르게 흘러가면 감정적으로 반응할 때가 있다.",                domain:1 },
+  { n:7,  text:"학생들의 반응이 부족하면 쉽게 낙심하거나 답답함을 느낀다.",                          domain:1 },
+  { n:8,  text:"내 감정 상태가 학생들을 대하는 태도에 영향을 주는 편이다.",                          domain:1 },
+  { n:9,  text:"힘들거나 피곤할 때 학생의 말과 행동을 더 부정적으로 받아들이는 경우가 있다.",        domain:1 },
+  { n:10, text:"문제가 생기면 잠시 멈추고 생각하기보다 바로 말하거나 반응하는 편이다.",              domain:1 },
+  { n:11, text:"학생의 말을 끝까지 듣기보다 내가 먼저 가르치려 하거나 정리하려는 편이다.",          domain:2 },
+  { n:12, text:"학부모나 동료교사의 의견이 내 생각과 다를 때 불편함을 느끼는 편이다.",              domain:2 },
+  { n:13, text:"조언이나 피드백을 받을 때 감사보다 방어적인 마음이 먼저 들 때가 있다.",            domain:2 },
+  { n:14, text:"나는 상대방의 입장을 충분히 이해하기보다 내 책임과 입장부터 설명하려는 편이다.",    domain:2 },
+  { n:15, text:"학생이나 동료를 몇 번의 경험만으로 판단하는 경향이 있다.",                          domain:2 },
+  { n:16, text:"나는 학생을 변화시켜야 할 대상으로만 보고, 함께 자라가야 할 존재로 보지 못할 때가 있다.", domain:3 },
+  { n:17, text:"가르치는 일의 본질보다 프로그램 진행이나 눈에 보이는 결과에 더 집중할 때가 있다.", domain:3 },
+  { n:18, text:"학생 한 명 한 명의 형편과 마음을 깊이 헤아리기보다 전체 운영을 우선할 때가 많다.", domain:3 },
+  { n:19, text:"나는 교사로서 배우고 성장하려는 노력보다 익숙한 방식에 머무는 편이다.",            domain:3 },
+  { n:20, text:"하나님 앞에서 교사로 부름받은 사람이라는 마음보다 역할 수행에만 머무를 때가 있다.", domain:3 },
+];
+
+const DOMAINS = [
+  { name:"학생 이해", max:25 },
+  { name:"감정 조절", max:25 },
+  { name:"소통·관계", max:25 },
+  { name:"소명 의식", max:25 },
+];
+
+const TYPES = [
+  { min:20,  max:44,  name:"성찰하는 교사",      desc:"자신의 연약함을 솔직히 인정하는 교사입니다.\n이 점검이 성장의 첫 걸음이 됩니다." },
+  { min:45,  max:64,  name:"균형을 찾는 교사",   desc:"강점과 약점이 공존하는 교사입니다.\n어떤 영역에서 더 자라갈지 생각해 보세요." },
+  { min:65,  max:79,  name:"돌아볼 교사",        desc:"몇 가지 습관이 관계를 막고 있을 수 있습니다.\n구체적인 영역을 살펴보면 좋겠습니다." },
+  { min:80,  max:100, name:"집중 성장이 필요한 교사", desc:"솔직하게 응답해 주셨습니다.\n이 결과가 변화의 출발점이 되기를 바랍니다." },
+];
+
+const MESSAGES = [
+  "당신의 솔직함이 이미 교사로서의 성실함을 보여줍니다. 학생들은 완벽한 교사가 아니라 함께 자라가는 교사를 기억합니다.",
+  "균형 잡힌 자기 인식은 성장의 토대입니다. 낮은 점수의 영역에서 작은 변화 하나를 시도해 보세요.",
+  "점수가 높은 영역에서 구체적인 변화를 시작해 보세요. 한 가지 습관을 바꾸는 것만으로도 관계가 달라집니다.",
+  "높은 점수는 솔직함의 증거입니다. 이 결과를 동료와 나누고, 함께 기도하며 나아가는 것이 다음 단계입니다.",
+];
+
+let answers = new Array(20).fill(null);
+
+function startSurvey() {
+  document.getElementById('cover').style.display = 'none';
+  document.getElementById('survey').style.display = 'block';
+  buildQuestions();
+  window.scrollTo(0,0);
+}
+
+function buildQuestions() {
+  const wrap = document.getElementById('questions-wrap');
+  wrap.innerHTML = '';
+  QUESTIONS.forEach((q, i) => {
+    const card = document.createElement('div');
+    card.className = 'question-card';
+    card.id = `card-${i}`;
+    card.innerHTML = `
+      <div class="q-number">Q ${String(q.n).padStart(2,'0')} · ${DOMAINS[q.domain].name}</div>
+      <div class="q-text">${q.text}</div>
+      <div class="scale-wrap">
+        <div class="scale-labels">
+          <span>전혀 그렇지 않다</span>
+          <span>매우 그렇다</span>
+        </div>
+        <div class="scale-options">
+          ${[1,2,3,4,5].map(v=>`<button class="scale-btn" data-q="${i}" data-v="${v}" onclick="selectAnswer(${i},${v})">${v}</button>`).join('')}
+        </div>
+      </div>
+    `;
+    wrap.appendChild(card);
+  });
+}
+
+function selectAnswer(qi, val) {
+  answers[qi] = val;
+  document.querySelectorAll(`.scale-btn[data-q="${qi}"]`).forEach(b => {
+    b.classList.toggle('selected', parseInt(b.dataset.v) === val);
+  });
+  document.getElementById(`card-${qi}`).classList.add('answered');
+  updateProgress();
+}
+
+function updateProgress() {
+  const done = answers.filter(a => a !== null).length;
+  const pct = Math.round(done / 20 * 100);
+  document.getElementById('prog-text').textContent = `${done} / 20`;
+  document.getElementById('prog-pct').textContent = `${pct}%`;
+  document.getElementById('prog-fill').style.width = pct + '%';
+}
+
+function submitSurvey() {
+  const unanswered = answers.map((a,i) => a===null ? i+1 : null).filter(Boolean);
+  if (unanswered.length > 0) {
+    document.getElementById('unanswered-msg').textContent =
+      `아직 응답하지 않은 문항이 있습니다: ${unanswered.slice(0,5).join(', ')}번${unanswered.length>5?` 외 ${unanswered.length-5}개`:''}`;
+    const firstCard = document.getElementById(`card-${unanswered[0]-1}`);
+    firstCard.scrollIntoView({ behavior:'smooth', block:'center' });
+    return;
+  }
+  showResult();
+}
+
+function showResult() {
+  document.getElementById('survey').style.display = 'none';
+  document.getElementById('result').style.display = 'block';
+  window.scrollTo(0,0);
+
+  const domainScores = [0,0,0,0];
+  QUESTIONS.forEach((q,i) => { domainScores[q.domain] += answers[i]; });
+  const total = domainScores.reduce((a,b)=>a+b, 0);
+
+  document.getElementById('r-total').textContent = total;
+
+  const typeIdx = TYPES.findIndex(t => total >= t.min && total <= t.max);
+  const type = TYPES[Math.max(0, typeIdx)];
+  document.getElementById('r-type-name').textContent = type.name;
+  document.getElementById('r-type-desc').textContent = type.desc;
+  document.getElementById('r-message').textContent = MESSAGES[Math.max(0, typeIdx)];
+
+  const barsWrap = document.getElementById('domain-bars');
+  barsWrap.innerHTML = '';
+  domainScores.forEach((s, i) => {
+    const pct = Math.round(s / DOMAINS[i].max * 100);
+    barsWrap.innerHTML += `
+      <div class="domain-row">
+        <div class="domain-name">${DOMAINS[i].name}</div>
+        <div class="domain-bar-bg">
+          <div class="domain-bar-fill" id="bar-${i}" style="width:0%"></div>
+        </div>
+        <div class="domain-score">${s}<span style="font-size:10px;color:#aaa">/${DOMAINS[i].max}</span></div>
+      </div>
+    `;
+  });
+  setTimeout(() => {
+    domainScores.forEach((s,i) => {
+      document.getElementById(`bar-${i}`).style.width = Math.round(s/DOMAINS[i].max*100) + '%';
+    });
+  }, 100);
+}
+
+function restart() {
+  answers = new Array(20).fill(null);
+  document.getElementById('result').style.display = 'none';
+  document.getElementById('cover').style.display = 'flex';
+  window.scrollTo(0,0);
+}
+</script>
+</body>
+</html>
